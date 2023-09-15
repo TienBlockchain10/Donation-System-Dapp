@@ -2,40 +2,101 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .main-container {
-    @apply w-full max-w-3xl sm:mt-14 mx-auto overflow-hidden sm:rounded-xl shadow-lg bg-gray-900 border-2 border-slate-800 text-slate-300 text-lg
-  }
+.container {
+  display: flex;
+  margin-left: 0px;
+  /* Adjust margin as needed */
+}
 
-  .headline {
-    @apply text-xl p-2 text-center sm:text-left text-4xl sm:py-5 border-b-2 border-slate-800 sm:px-10 bg-gray-900 font-bold text-violet-400
-  }
+.main-container {
+  @apply w-full max-w-4xl sm:mt-14 ml-10 mr-10 overflow-hidden sm:rounded-xl shadow-lg bg-gray-900 border-2 border-slate-800 text-slate-300 text-lg;
+}
 
-  .headline-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-tr from-indigo-500 to-purple-900
-  }
+.headline {
+  @apply text-xl p-2 text-center sm:text-left text-4xl sm:py-5 border-b-2 border-slate-800 sm:px-10 bg-gray-900 font-bold text-violet-400
+}
 
-  .form-style {
-    @apply flex flex-col border rounded-lg border-gray-600
-  }
+.headline-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-tr from-indigo-500 to-purple-900
+}
 
-  .input-style {
-    @apply px-6 py-3 text-gray-100 border-none rounded-t-lg outline-none bg-gray-800 placeholder-gray-400 focus:placeholder-transparent focus-within:ring-indigo-500 z-40
-  }
+.form-style {
+  @apply flex flex-col border rounded-lg border-gray-600
+}
 
-  .btn-purple {
-    @apply font-bold px-4 py-3 text-sm tracking-wider text-gray-100 uppercase transition-colors duration-200 transform bg-indigo-800 hover:bg-indigo-700 z-30
-  }
+.input-style {
+  @apply px-6 py-3 text-gray-100 border-none rounded-t-lg outline-none bg-gray-800 placeholder-gray-400 focus:placeholder-transparent focus-within:ring-indigo-500 z-40
+}
 
-  .btn-grey {
-    @apply px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-200 transform bg-gray-700 hover:bg-gray-600 focus:bg-gray-600 focus:outline-none
-  }
+.btn-purple {
+  @apply font-bold px-4 py-3 text-sm tracking-wider text-gray-100 uppercase transition-colors duration-200 transform bg-indigo-800 hover:bg-indigo-700 z-30
+}
 
-  .btn-connect {
-    @apply bg-indigo-500 px-5 py-3 mt-5 rounded-lg text-slate-100 font-bold
-  }
+.btn-grey {
+  @apply px-4 py-3 text-sm font-medium tracking-wider text-gray-100 uppercase transition-colors duration-200 transform bg-gray-700 hover:bg-gray-600 focus:bg-gray-600 focus:outline-none
+}
 
-  .system-owner-section {
-    @apply bg-indigo-900 bg-opacity-60 text-white w-4/5 mx-auto border-2 rounded-xl border-indigo-500 mb-10
-  }
+.btn-connect {
+  @apply bg-indigo-500 px-5 py-3 mt-5 rounded-lg text-slate-100 font-bold
+}
+
+.system-owner-section {
+  @apply bg-indigo-900 bg-opacity-60 text-white w-4/5 mx-auto border-2 rounded-xl border-indigo-500 mb-10
+}
+
+
+
+.donor-data-container {
+  width: 30%;
+  /* Adjust width as needed */
+  max-width: 50%;
+  /* Adjust max-width as needed */
+  padding: 20px;
+  /* Add padding as needed */
+  background-color: #05123e;
+  /* Background color */
+  color: #fff;
+  /* Text color */
+  box-sizing: border-box;
+  margin-left: 20px;
+  /* Adjust margin as needed */
+}
+
+/* Style the heading inside the donor data container */
+.donor-data-container h2 {
+  font-size: 24px;
+  /* Adjust the font size as needed */
+  color: #ffcc00;
+  /* Heading text color */
+  margin-bottom: 10px;
+  /* Add margin as needed */
+}
+
+/* Style the list inside the donor data container */
+.donor-data-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Style list items */
+.donor-data-container li {
+  margin-bottom: 10px;
+  /* Add margin between list items */
+}
+
+/* Style the bold text within list items */
+.donor-data-container .font-bold {
+  font-weight: bold;
+}
+
+/* Add styles for the address and donation amount */
+.donor-data-container p {
+  margin: 0;
+}
+
+/* Style the container's background, border, and shadow as needed */
+.donor-data-container {
+  background-color: #16166a;
+  border: 2px solid #0d1b99;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
