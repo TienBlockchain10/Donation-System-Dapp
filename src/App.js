@@ -8,11 +8,12 @@ function App() {
   const [inputValue, setInputValue] = useState({ withdraw: "", donate: "", SystemName: "" });
   const [systemOwnerAddress, setsystemOwnerAddress] = useState(null);
   const [donorTotalBalance, setdonorTotalBalance] = useState(null);
+  const [systemTotalBalance, setSystemTotalBalance] = useState(null);
   const [currentSystemName, setcurrentSystemName] = useState(null);
   const [donorAddress, setdonorAddress] = useState(null);
   const [error, setError] = useState(null);
 
-  const contractAddress = '0xD8a493908Dd187C26d6C8Ed9A25815c0cD507DdF';
+  const contractAddress = '0xf12f872c8c0277de2aee51d9c5c92ddf4ebdb584';
   const contractABI = abi.abi;
 
   const checkIfWalletIsConnected = async () => {
@@ -74,6 +75,10 @@ function App() {
     }
   }
 
+
+
+
+
   const getSystemOwnerHandler = async () => {
     try {
       if (window.ethereum) {
@@ -122,6 +127,29 @@ function App() {
     }
   }
 
+
+
+  const systemBalanceHandler = async () => {
+    try {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const DonationSystem = new ethers.Contract(contractAddress, contractABI, signer);
+
+        let balance = await DonationSystem.getSystemBalance();
+        setSystemTotalBalance(utils.formatEther(balance));
+        console.log("Retrieved balance...", balance);
+
+      } else {
+        console.log("Ethereum object not found, install Metamask.");
+        setError("Please install a MetaMask wallet to use our donation system.");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   const donateMoneyHandler = async (event) => {
     try {
       event.preventDefault();
@@ -146,32 +174,58 @@ function App() {
     }
   }
 
-  const withdrawMoneyHandler = async (event) => {
+  // const withdrawMoneyHandler = async (event) => {
+  //   try {
+  //     event.preventDefault();
+  //     if (window.ethereum) {
+  //       const provider = new ethers.providers.Web3Provider(window.ethereum);
+  //       const signer = provider.getSigner();
+  //       const DonationSystem = new ethers.Contract(contractAddress, contractABI, signer);
+
+  //       let myAddress = await signer.getAddress()
+  //       console.log("provider signer...", myAddress);
+
+  //       const txn = await DonationSystem.withdrawMoney(myAddress, ethers.utils.parseEther(inputValue.withdraw));
+  //       console.log("Withdrawing money...");
+  //       await txn.wait();
+  //       console.log("Money with drew...done", txn.hash);
+
+  //       donorBalanceHandler();
+
+  //     } else {
+  //       console.log("Ethereum object not found, install Metamask.");
+  //       setError("Please install a MetaMask wallet to use our donation system.");
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+
+
+  const systemWithdrawMoneyHandler = async (event) => {
     try {
       event.preventDefault();
       if (window.ethereum) {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const DonationSystem = new ethers.Contract(contractAddress, contractABI, signer);
-
-        let myAddress = await signer.getAddress()
-        console.log("provider signer...", myAddress);
-
-        const txn = await DonationSystem.withdrawMoney(myAddress, ethers.utils.parseEther(inputValue.withdraw));
-        console.log("Withdrawing money...");
+  
+        const txn = await DonationSystem.withdrawAllToOwner(); // Call the withdrawAllToOwner function
+        console.log("Withdrawing all funds to owner...");
         await txn.wait();
-        console.log("Money with drew...done", txn.hash);
-
-        donorBalanceHandler();
-
+        console.log("Funds withdrawn to owner. Transaction hash:", txn.hash);
+  
+        // You may want to update the user interface or perform other actions here
+  
       } else {
         console.log("Ethereum object not found, install Metamask.");
         setError("Please install a MetaMask wallet to use our donation system.");
       }
     } catch (error) {
-      console.log(error)
+      console.error("Error while withdrawing funds to owner:", error);
     }
   }
+  
 
   const handleInputChange = (event) => {
     setInputValue(prevFormData => ({ ...prevFormData, [event.target.name]: event.target.value }));
@@ -182,6 +236,7 @@ function App() {
     getSystemName();
     getSystemOwnerHandler();
     donorBalanceHandler()
+    systemBalanceHandler();
   }, [isWalletConnected])
 
   return (
@@ -210,7 +265,7 @@ function App() {
               onClick={donateMoneyHandler}>donate Money In ETH</button>
           </form>
         </div>
-        <div className="mt-10 mb-10">
+        {/* <div className="mt-10 mb-10">
           <form className="form-style">
             <input
               type="text"
@@ -226,10 +281,11 @@ function App() {
               Withdraw Money In ETH
             </button>
           </form>
-        </div>
+        </div> */}
         <div className="mt-5">
-          <p><span className="font-bold">Customer Balance: </span>{donorTotalBalance}</p>
+          <p><span className="font-bold">Total Donated: </span>{donorTotalBalance}</p>
         </div>
+
         <div className="mt-5">
           <p><span className="font-bold">System Owner Address: </span>{systemOwnerAddress}</p>
         </div>
@@ -244,27 +300,49 @@ function App() {
         isSystemOwner && (
           <section className="system-owner-section">
             <h2 className="text-xl border-b-2 border-indigo-500 px-10 py-4 font-bold">System Admin Panel</h2>
-            <div className="p-10">
-              <form className="form-style">
-                <input
-                  type="text"
-                  className="input-style"
-                  onChange={handleInputChange}
-                  name="SystemName"
-                  placeholder="Enter a Name for Your Donation System"
-                  value={inputValue.SystemName}
-                />
-                <button
-                  className="btn-grey"
-                  onClick={setSystemNameHandler}>
-                  Set Donation System Name
-                </button>
-              </form>
-            </div>
+              <div className="mt-5">
+          <p><span className="text-l px-10 py-4 font-bold">System Balance: </span>{systemTotalBalance}</p>
+        </div>
+
+        <div className="p-4">
+  <form className="form-style">
+    <input
+      type="text"
+      className="input-style"
+      onChange={handleInputChange}
+      name="SystemName"
+      placeholder="Enter a Name for Your Donation System"
+      value={inputValue.SystemName}
+    />
+    <button
+      className="btn-grey"
+      onClick={setSystemNameHandler}
+    >
+      Set Donation System Name
+    </button>
+  </form>
+</div>
+
+<div className="p-4"> {/* Add margin-top (mt-2) to the second container */}
+  <form className="form-style">
+    <input
+      type="text"
+      className="input-style"
+      onChange={handleInputChange}
+      name="WithdrawalAmount"
+      placeholder="Enter System Withdrawal Amount"
+      value={inputValue.WithdrawalAmount}
+    />
+    <button
+      className="btn-grey"
+      onClick={systemWithdrawMoneyHandler}
+    >
+      Withdraw System Balance
+    </button>
+  </form>
+</div>
           </section>
         )
-
-        
       }
     </main>
   );
