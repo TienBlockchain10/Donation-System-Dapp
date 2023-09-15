@@ -12,8 +12,11 @@ function App() {
   const [currentSystemName, setcurrentSystemName] = useState(null);
   const [donorAddress, setdonorAddress] = useState(null);
   const [error, setError] = useState(null);
+  const [donorAddresses, setDonorAddresses] = useState([]);
+  const [donationAmounts, setDonationAmounts] = useState([]);
 
-  const contractAddress = '0xf12f872c8c0277de2aee51d9c5c92ddf4ebdb584';
+
+  const contractAddress = '0xa38de5cf88cf14309882296670a660c9568f4cd1';
   const contractABI = abi.abi;
 
   const checkIfWalletIsConnected = async () => {
@@ -135,19 +138,26 @@ function App() {
         const provider = new ethers.providers.Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const DonationSystem = new ethers.Contract(contractAddress, contractABI, signer);
-
+  
+        // Add an event listener for the SystemBalanceChanged event
+        DonationSystem.on("SystemBalanceChanged", (newBalance) => {
+          // Update the system total balance when the event is triggered
+          setSystemTotalBalance(utils.formatEther(newBalance));
+        });
+  
+        // Initially fetch and set the system balance
         let balance = await DonationSystem.getSystemBalance();
         setSystemTotalBalance(utils.formatEther(balance));
-        console.log("Retrieved balance...", balance);
-
+        console.log("Initial system balance:", balance);
       } else {
         console.log("Ethereum object not found, install Metamask.");
         setError("Please install a MetaMask wallet to use our donation system.");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
+  
 
 
   const donateMoneyHandler = async (event) => {
@@ -215,6 +225,9 @@ function App() {
         await txn.wait();
         console.log("Funds withdrawn to owner. Transaction hash:", txn.hash);
   
+        // Immediately update the system balance after a successful withdrawal
+        systemBalanceHandler();
+  
         // You may want to update the user interface or perform other actions here
   
       } else {
@@ -224,7 +237,8 @@ function App() {
     } catch (error) {
       console.error("Error while withdrawing funds to owner:", error);
     }
-  }
+  };
+  
   
 
   const handleInputChange = (event) => {
@@ -235,12 +249,44 @@ function App() {
     checkIfWalletIsConnected();
     getSystemName();
     getSystemOwnerHandler();
-    donorBalanceHandler()
+    donorBalanceHandler();
     systemBalanceHandler();
-  }, [isWalletConnected])
+  
+    // Fetch donor data
+    fetchDonorData();
+  }, [isWalletConnected]);
+  
+  const fetchDonorData = async () => {
+    try {
+      if (window.ethereum) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const DonationSystem = new ethers.Contract(contractAddress, contractABI, signer);
+  
+        const addresses = await DonationSystem.getAllDonatedAddresses();
+        const amounts = await DonationSystem.getAllDonationAmounts();
+  
+        setDonorAddresses(addresses);
+        setDonationAmounts(amounts);
+      } else {
+        console.log("Ethereum object not found, install Metamask.");
+        setError("Please install a MetaMask wallet to use our donation system.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const hasDonorData = donorAddresses.length > 0 && donorAddresses.length === donationAmounts.length;
 
+  
   return (
+ 
+    <>
+   <div className="container">
+  
+
     <main className="main-container">
+
       <h2 className="headline"><span className="headline-gradient">Donation System Project</span> 💰</h2>
       <section className="customer-section px-10 pt-5 pb-10">
         {error && <p className="text-2xl text-red-700">{error}</p>}
@@ -283,7 +329,7 @@ function App() {
           </form>
         </div> */}
         <div className="mt-5">
-          <p><span className="font-bold">Total Donated: </span>{donorTotalBalance}</p>
+          <p><span className="font-bold">Your Total Donations: </span>{donorTotalBalance}</p>
         </div>
 
         <div className="mt-5">
@@ -344,7 +390,31 @@ function App() {
           </section>
         )
       }
+      
+      
     </main>
+   
+
+    
+    {hasDonorData && (
+      <div className="donor-data-container">
+    <h2>Donation Leaderboards</h2>
+   
+    <ul>
+      {donorAddresses.map((address, index) => (
+        <li key={address}>
+          <p><span className="font-bold">Address: </span>{address}</p>
+          <p><span className="font-bold">Donation Amount: </span>{utils.formatEther(donationAmounts[index])} ETH</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+    )}
+
+    </div>
+    </>
   );
+
 }
+
 export default App;
