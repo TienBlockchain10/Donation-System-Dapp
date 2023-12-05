@@ -1,8 +1,11 @@
+// Import React hooks and ethers for interacting with the Ethereum blockchain
 import { useState, useEffect } from 'react';
 import { ethers, utils } from "ethers";
+// Import the contract's ABI (Application Binary Interface)
 import abi from "./contracts/DonationSystem.json";
 
 function App() {
+  // State hooks to manage various states in the app
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [isSystemOwner, setisSystemOwner] = useState(false);
   const [inputValue, setInputValue] = useState({ withdraw: "", donate: "", SystemName: "" });
@@ -12,16 +15,16 @@ function App() {
   const [currentSystemName, setcurrentSystemName] = useState(null);
   const [donorAddress, setdonorAddress] = useState(null);
   const [error, setError] = useState(null);
+  // Lists to store all donor addresses and their corresponding donation amounts
   const [donorAddresses, setDonorAddresses] = useState([]);
   const [donationAmounts, setDonationAmounts] = useState([]);
  
 
-
-  // const contractAddress = '0xa38de5cf88cf14309882296670a660c9568f4cd1';
+  // Contract address and ABI for connecting to the smart contract
   const contractAddress = '0xC90D341cbF6c13c00bF72a21fAbab029244EB264';
-  // const contractAddress = '0xd9145CCE52D386f254917e481eB44e9943F39138';
   const contractABI = abi.abi;
 
+// Function to check if the user's wallet is connected
   const checkIfWalletIsConnected = async () => {
     try {
       if (window.ethereum) {
@@ -38,7 +41,7 @@ function App() {
       console.log(error);
     }
   }
-
+ // Function to get the current system name from the smart contract
   const getSystemName = async () => {
     try {
       if (window.ethereum) {
@@ -57,7 +60,7 @@ function App() {
       console.log(error)
     }
   }
-
+ // Function to set a new system name
   const setSystemNameHandler = async (event) => {
     event.preventDefault();
     try {
@@ -84,7 +87,7 @@ function App() {
 
 
 
-
+  // Function to get the system owner's address
   const getSystemOwnerHandler = async () => {
     try {
       if (window.ethereum) {
@@ -112,7 +115,7 @@ function App() {
   
 
 
-
+  // Function to retrieve the total balance donated by the current connected wallet
   const donorBalanceHandler = async () => {
     try {
       if (window.ethereum) {
@@ -135,6 +138,7 @@ function App() {
 
 
 
+  // Function to retrieve the system's total balance
   const systemBalanceHandler = async () => {
     try {
       if (window.ethereum) {
@@ -162,7 +166,7 @@ function App() {
   }
   
 
-
+// Function to handle the donation action when a user sends Ether
   const donateMoneyHandler = async (event) => {
     try {
       event.preventDefault();
@@ -214,7 +218,7 @@ function App() {
   //   }
   // }
 
-
+ // Function to handle the withdrawal of all funds to the owner's wallet
   const systemWithdrawMoneyHandler = async (event) => {
     try {
       event.preventDefault();
@@ -243,11 +247,11 @@ function App() {
   };
   
   
-
+ // Function to handle changes in the input fields
   const handleInputChange = (event) => {
     setInputValue(prevFormData => ({ ...prevFormData, [event.target.name]: event.target.value }));
   }
-
+// useEffect hook to perform actions on component mount
   useEffect(() => {
     checkIfWalletIsConnected();
     getSystemName();
@@ -258,7 +262,7 @@ function App() {
     // Fetch donor data
     fetchDonorData();
   }, [isWalletConnected]);
-  
+  // Function to fetch all donor addresses and donation amounts
   const fetchDonorData = async () => {
     try {
       if (window.ethereum) {
@@ -279,6 +283,7 @@ function App() {
       console.log(error);
     }
   };
+  // Check if there is donor data to display
   const hasDonorData = donorAddresses.length > 0 && donorAddresses.length === donationAmounts.length;
 
   
