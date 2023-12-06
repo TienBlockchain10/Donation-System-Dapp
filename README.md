@@ -6,7 +6,7 @@ CharityBlock stands at the forefront of redefining philanthropy in the digital a
 
 Diving deep into its core, CharityBlock is anchored on a decentralized ledger. This ensures every donation is securely captured and available for public verification. Such openness eliminates the shadows of fund mismanagement or misuse. Donors, at any point in time, can effortlessly trace their contributions, reinforcing their faith in the platform's unwavering integrity.
 
-However, CharityBlock goes beyond merely securing donations. Tailored for the discerning, contemporary donor, it rolls out a suite of features. From instantaneous global transactions devoid of hefty charges to the automation of tax documentation and a unique recognition system for consistent benefactors, the platform is all-encompassing. Donors can also purchase unique digital collectibles and have the funds be used as donations for a specific cause.
+However, CharityBlock goes beyond merely securing donations. Tailored for the discerning, contemporary donor, it rolls out a suite of features. From instantaneous global transactions devoid of hefty charges to the automation of tax documentation and a unique recognition system for consistent benefactors, the platform is all-encompassing. 
 
 To encapsulate, CharityBlock isn't just a system—it's the embodiment of philanthropy's future. A vision where technology amplifies the act of giving, making it more transparent, efficient, and universally accessible.
 
