@@ -25,4 +25,4 @@ To encapsulate, CharityBlock isn't just a system—it's the embodiment of philan
 
 ## Conclusion
 
-The Web3 Donation Management System leverages blockchain technology to encourage cryptocurrency donations while enhancing transparency and recognition. Donors are motivated to contribute to BSS's mission, knowing their support is acknowledged through NFT donation badges. The project's use of the Goerli testnet ensures a secure and reliable environment for testing and demonstration.
+The Web3 Donation Management System leverages blockchain technology to encourage cryptocurrency donations while enhancing transparency and recognition. The project's use of the Goerli testnet ensures a secure and reliable environment for testing and demonstration.
