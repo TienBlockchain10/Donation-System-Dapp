@@ -22,6 +22,7 @@ To encapsulate, CharityBlock isn't just a system—it's the embodiment of philan
 ## Implementation
 
 - The project is developed using the Goerli testnet, providing a secure environment for cryptocurrency donations and testing.
+- Built with traditional front-end tools such as React, HTML, CSS, and JS, as well as utilizing the Ethereum Virtual Machine to deploy a smart contract which was written in Solidity.
 
 ## Conclusion
 
