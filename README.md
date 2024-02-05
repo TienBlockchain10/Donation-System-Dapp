@@ -38,10 +38,10 @@ To encapsulate, CharityBlock isn't just a system—it's the embodiment of philan
 10.	**Display of Donation System Owner Address**
 -	Purpose: To inform donors about the owner address of the donation system.
 -	Functionality: The system will display the owner’s wallet address for transparency.
-  1.	**Display Donor Wallet Address**
+11.	**Display Donor Wallet Address**
 - Purpose: To allow donors to confirm and keep track of their donation transactions.
 -	Functionality: Users will be able to see their own wallet address within the app to monitor their activity.
-  12.	**Admin Panel Accessibility**
+12.	**Admin Panel Accessibility**
 -	Purpose: To enable system administrators to manage the donation platform.
 -	Functionality: An admin-only panel for system management, including viewing total system balance, changing system name, and withdrawing donations.
 
